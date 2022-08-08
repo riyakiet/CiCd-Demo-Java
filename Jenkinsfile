@@ -21,7 +21,7 @@ pipeline {
         dir("/var/lib/jenkins/workspace/java-demo-pipeline") {
           sh 'mvn -B -DskipTests clean install'
         }
-        sh ' zip -r /var/lib/jenkins/workspace/java-demo-pipeline/app.zip /var/lib/jenkins/workspace/java-demo-pipeline/demo-0.0.1-SNAPSHOT.jar /var/lib/jenkins/workspace/java-demo-pipeline/java.sh '
+        sh ' zip -r app.zip ./target/demo-0.0.1-SNAPSHOT.jar java.sh '
       }
     }
     stage('deploy') {
