@@ -4,9 +4,9 @@ pipeline {
     maven "MAVEN"
     jdk "JDK"
   }
-//   environment {
-//     JAVA_HOME = '/usr/lib/jvm/java-1.8.0-openjdk-amd64'      
-//   }
+  environment {
+    JAVA_HOME = '/usr/lib/jvm/java-1.8.0-openjdk-amd64'      
+  }
   stages {
     stage('Initialize'){
       steps{
