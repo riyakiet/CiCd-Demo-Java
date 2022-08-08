@@ -21,7 +21,7 @@ pipeline {
         dir("/var/lib/jenkins/workspace/deployToS3") {
           sh 'mvn -B -DskipTests clean package'
         }
-        sh ' zip -r /var/lib/jenkins/workspace/deployToS3/app.zip /var/lib/jenkins/workspace/deployToS3/target/demo-0.0.1-SNAPSHOT.jar /var/lib/jenkins/workspace/deployToS3/java.sh '
+        sh ' zip -r /var/lib/jenkins/workspace/java-demo-pipeline/app.zip /var/lib/jenkins/workspace/java-demo-pipeline/demo-0.0.1-SNAPSHOT.jar /var/lib/jenkins/workspace/java-demo-pipeline/java.sh '
       }
     }
     stage('deploy') {
@@ -32,7 +32,7 @@ pipeline {
          sh 'cd target'
          sh 'ls target'
         withAWS(region:'us-east-1',credentials:'aws') {
-          s3Upload(file:'/var/lib/jenkins/workspace/deployToS3/app.zip', bucket:'jenkins-test-javaupload/app.zip')
+          s3Upload(file:'/var/lib/jenkins/workspace/deployToS3/app.zip', bucket:'jenkins-test-javaupload/')
 //           sh '
 //           aws s3 cp ./target/demo-0.0.1-SNAPSHOT.jar s3://jenkins-test-javaupload/demo-0.0.1-SNAPSHOT.jar '
         }
