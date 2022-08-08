@@ -10,7 +10,7 @@ pipeline {
       steps {
         withAWS(region:'us-east-1',credentials:'aws') {
           sh 'echo "Uploading content with AWS creds"'
-            s3Upload(pathStyleAccessEnabled: true, payloadSigningEnabled: true, file:'./target/demo-0.0.1-SNAPSHOT.jar', bucket:'jenkins-test-javaupload')
+            s3Upload(file:'./target/demo-0.0.1-SNAPSHOT.jar', bucket:'jenkins-test-javaupload')
         }
       }
     }
