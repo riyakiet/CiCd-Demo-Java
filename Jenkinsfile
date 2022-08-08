@@ -19,7 +19,7 @@ pipeline {
       steps {
         echo "Build"
         dir("/var/lib/jenkins/workspace/java-demo-pipeline") {
-          sh 'mvn -B -DskipTests clean install'
+          sh 'mvn -B -DskipTests clean package'
         }
         sh ' zip -r app.zip ./target/demo-0.0.1-SNAPSHOT.jar java.sh '
       }
