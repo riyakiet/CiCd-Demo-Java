@@ -9,6 +9,7 @@ pipeline {
     stage('deploy') {
       steps {
          sh 'echo "Uploading content with AWS creds"'
+         sh 'pwd'
         withAWS(region:'us-east-1',credentials:'aws') {
           s3Upload(file:'./traget/demo-0.0.1-SNAPSHOT.jar', bucket:'jenkins-test-javaupload')
 //           sh '
