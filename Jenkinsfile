@@ -32,7 +32,7 @@ pipeline {
          sh 'cd target'
          sh 'ls target'
         withAWS(region:'us-east-1',credentials:'aws') {
-          s3Upload(file:'/var/lib/jenkins/workspace/deployToS3/app.zip', bucket:'jenkins-test-javaupload/')
+          s3Upload(file:'/var/lib/jenkins/workspace/deployToS3/app.zip', bucket:'jenkins-test-javaupload')
 //           sh '
 //           aws s3 cp ./target/demo-0.0.1-SNAPSHOT.jar s3://jenkins-test-javaupload/demo-0.0.1-SNAPSHOT.jar '
         }
