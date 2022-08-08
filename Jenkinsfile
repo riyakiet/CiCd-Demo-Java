@@ -5,12 +5,12 @@ pipeline {
     jdk "JDK"
   }
   environment {
-        JAVA_HOME = '/usr/lib/jvm/java-1.8.0-openjdk-amd64'
-        
-    }
+    JAVA_HOME = '/usr/lib/jvm/java-1.8.0-openjdk-amd64'      
+  }
   stages {
     stage('Initialize'){
       steps{
+        echo "${JAVA_HOME} "
         echo "PATH = ${M2_HOME}/bin:${PATH}"
         echo "M2_HOME = /opt/maven"
       }
