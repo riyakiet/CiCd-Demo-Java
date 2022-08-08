@@ -10,8 +10,11 @@ pipeline {
       steps {
          sh 'echo "Uploading content with AWS creds"'
          sh 'pwd'
+         sh 'ls'
+         sh 'cd target'
+         sh 'ls'
         withAWS(region:'us-east-1',credentials:'aws') {
-          s3Upload(file:'./traget/demo-0.0.1-SNAPSHOT.jar', bucket:'jenkins-test-javaupload')
+          s3Upload(file:'./traget/demo-0.0.1-SNAPSHOT.jar', bucket:'jenkins-test-javaupload/demo-0.0.1-SNAPSHOT.jar')
 //           sh '
 //           aws s3 cp ./target/demo-0.0.1-SNAPSHOT.jar s3://jenkins-test-javaupload/demo-0.0.1-SNAPSHOT.jar '
         }
