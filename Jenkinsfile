@@ -4,11 +4,8 @@ pipeline {
     maven "MAVEN"
     jdk "JDK"
   }
-  environment {
-    JAVA_HOME = '/usr/lib/jvm/java-1.8.0-openjdk-amd64'      
-  }
   stages {
-    stage('Initialize'){
+    stage('verifying tools'){
       steps{
         echo "${JAVA_HOME} "
         echo "PATH = ${M2_HOME}/bin:${PATH}"
@@ -22,7 +19,7 @@ pipeline {
 //           sh 'mvn -B -DskipTests clean package'
 //         }
         sh 'cp ./target/demo-0.0.1-SNAPSHOT.jar ./'
-        sh ' zip -r app.zip demo-0.0.1-SNAPSHOT.jar java.sh '
+        sh ' zip -r java-app.zip demo-0.0.1-SNAPSHOT.jar java.sh '
       }
     }
     stage('deploy') {
@@ -33,7 +30,7 @@ pipeline {
          sh 'cd target'
          sh 'ls target'
         withAWS(region:'us-east-1',credentials:'aws') {
-          s3Upload(file:'/var/lib/jenkins/workspace/java-demo-pipeline/app.zip', bucket:'jenkins-test-javaupload')
+          s3Upload(file:'/var/lib/jenkins/workspace/java-demo-pipeline/java-app.zip', bucket:'cicd-demo-jenkins')
 //           sh '
 //           aws s3 cp ./target/demo-0.0.1-SNAPSHOT.jar s3://jenkins-test-javaupload/demo-0.0.1-SNAPSHOT.jar '
         }
