@@ -14,7 +14,7 @@ public class DemoApplication {
 		SpringApplication.run(DemoApplication.class, args);
 	}
 
-	@GetMapping("/")
+	@GetMapping("/index")
 	public String getHomePage()
 	{
 		return "index";
