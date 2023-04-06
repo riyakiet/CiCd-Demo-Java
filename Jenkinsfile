@@ -28,7 +28,9 @@ pipeline {
  // Building Docker images
   stage('Building image'){
   withDockerRegistry(credentialsId: 'ecr:ap-south-1:Docker', url: 'https://418843764796.dkr.ecr.ap-south-1.amazonaws.com/nuvepro'){
+  script{
   dockerImage = docker.build "${IMAGE_REPO_NAME}:${IMAGE_TAG}"
+ }
  }
  }
  
