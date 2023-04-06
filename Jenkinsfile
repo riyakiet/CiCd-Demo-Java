@@ -11,16 +11,16 @@ pipeline {
     }
     stage('build') {
       steps {
-	      sh 'sudo mvn clean install'
+	sh 'sudo mvn clean install'
         sh 'cp ./target/demo-0.0.1-SNAPSHOT.jar ./'
         sh ' zip -r java-app.zip demo-0.0.1-SNAPSHOT.jar java.sh Dockerfile '
       }
     }
     stage('dockerize'){
-		  withDockerRegistry(credentialsId: 'ecr:ap-south-1:Docker', url: 'https://418843764796.dkr.ecr.ap-south-1.amazonaws.com/nuvepro'){
+	 withDockerRegistry(credentialsId: 'ecr:ap-south-1:Docker', url: 'https://418843764796.dkr.ecr.ap-south-1.amazonaws.com/nuvepro'){
 	     sh """ !/bin/bash
 	     docker.build nuvepro
       }
     }
-}
+  }
 }  	
