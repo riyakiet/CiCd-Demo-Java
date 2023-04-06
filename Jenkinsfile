@@ -1,4 +1,3 @@
-
 pipeline {
   agent any
 
@@ -23,10 +22,5 @@ pipeline {
 	     docker.build nuvepro
       }
     }
-	}
+}
 }  	
- 
-
-    
-    
-  
