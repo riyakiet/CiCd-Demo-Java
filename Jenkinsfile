@@ -1,40 +1,47 @@
 pipeline {
-  agent any
-  tools {
-    maven "MAVEN"
-    jdk "JDK"
-  }
-  stages {
-    stage('verifying tools'){
-      steps{
-        echo "${JAVA_HOME} "
-        echo "PATH = ${M2_HOME}/bin:${PATH}"
-        echo "M2_HOME = /opt/maven"
-      }
-    }
-    stage('build') {
-      steps {
-        echo "Build"
-//         dir("/var/lib/jenkins/workspace/java-demo-pipeline") {
-//           sh 'mvn -B -DskipTests clean package'
-//         }
-        sh 'cp ./target/demo-0.0.1-SNAPSHOT.jar ./'
-        sh ' zip -r java-app.zip demo-0.0.1-SNAPSHOT.jar java.sh '
-      }
-    }
-    stage('deploy') {
-      steps {
-         sh 'echo "Uploading content with AWS creds"'
-         sh 'pwd'
-         sh 'ls'
-         sh 'cd target'
-         sh 'ls target'
-        withAWS(region:'us-east-1',credentials:'aws') {
-          s3Upload(file:'/var/lib/jenkins/workspace/java-demo-pipeline/java-app.zip', bucket:'cicd-demo-jenkins')
-//           sh '
-//           aws s3 cp ./target/demo-0.0.1-SNAPSHOT.jar s3://jenkins-test-javaupload/demo-0.0.1-SNAPSHOT.jar '
-        }
-      }
-    }
-  }
+ agent any
+ environment {
+ AWS_ACCOUNT_ID="418843764796"
+ AWS_DEFAULT_REGION="ap-south-1" 
+ IMAGE_REPO_NAME="nuvepro"
+ IMAGE_TAG="latest"
+ REPOSITORY_URI = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}"
+ }
+ 
+ stages {
+ 
+ stage('Logging into AWS ECR') {
+ steps {
+ script {
+ sh "aws ecr get-login-password - region ${AWS_DEFAULT_REGION} | docker login - username AWS - password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com"
+ }
+ 
+ }
+ }
+ 
+ stage('Cloning Git') {
+ steps {
+ checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: '', url: 'https://github.com/yadav3500/CiCd-Demo-Java.git']]]) 
+ }
+ }
+ 
+ // Building Docker images
+ stage('Building image') {
+ steps{
+ script {
+ dockerImage = docker.build "${IMAGE_REPO_NAME}:${IMAGE_TAG}"
+ }
+ }
+ }
+ 
+ // Uploading Docker images into AWS ECR
+ stage('Pushing to ECR') {
+ steps{ 
+ script {
+ sh "docker tag ${IMAGE_REPO_NAME}:${IMAGE_TAG} ${REPOSITORY_URI}:$IMAGE_TAG"
+ sh "docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}:${IMAGE_TAG}"
+ }
+ }
+ }
+ }
 }
