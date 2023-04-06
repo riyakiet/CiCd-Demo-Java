@@ -1,47 +1,32 @@
+
 pipeline {
- agent any
- environment {
- AWS_ACCOUNT_ID="418843764796"
- AWS_DEFAULT_REGION="ap-south-1" 
- IMAGE_REPO_NAME="nuvepro"
- IMAGE_TAG="latest"
- REPOSITORY_URI = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}"
- }
+  agent any
+
+  stages {
+    stage('verifying tools'){
+      steps{
+        echo "${JAVA_HOME} "
+        echo "PATH = ${M2_HOME}/bin:${PATH}"
+        echo "M2_HOME = /opt/maven"
+      }
+    }
+    stage('build') {
+      steps {
+	      sh 'sudo mvn clean install'
+        sh 'cp ./target/demo-0.0.1-SNAPSHOT.jar ./'
+        sh ' zip -r java-app.zip demo-0.0.1-SNAPSHOT.jar java.sh Dockerfile '
+      }
+    }
+    stage('dockerize'){
+		  withDockerRegistry(credentialsId: 'ecr:ap-south-1:Docker', url: 'https://418843764796.dkr.ecr.ap-south-1.amazonaws.com/nuvepro'){
+	     sh """ !/bin/bash
+	     docker.build nuvepro
+      }
+    }
+	}
+}  	
  
- stages {
- 
- stage('Logging into AWS ECR') {
- steps {
- script {
- sh "aws ecr get-login-password - region ${AWS_DEFAULT_REGION} | docker login - username AWS - password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com"
- }
- 
- }
- }
- 
- stage('Cloning Git') {
- steps {
- checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: '', url: 'https://github.com/yadav3500/CiCd-Demo-Java.git']]]) 
- }
- }
- 
- // Building Docker images
-  stage('Building image'){
-  withDockerRegistry(credentialsId: 'ecr:ap-south-1:Docker', url: 'https://418843764796.dkr.ecr.ap-south-1.amazonaws.com/nuvepro'){
-  script{
-  dockerImage = docker.build "${IMAGE_REPO_NAME}:${IMAGE_TAG}"
- }
- }
- }
- 
- // Uploading Docker images into AWS ECR
- stage('Pushing to ECR') {
- steps{ 
- script {
- sh "docker tag ${IMAGE_REPO_NAME}:${IMAGE_TAG} ${REPOSITORY_URI}:$IMAGE_TAG"
- sh "docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}:${IMAGE_TAG}"
- }
- }
- }
- }
-}
+
+    
+    
+  
