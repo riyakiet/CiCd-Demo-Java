@@ -18,11 +18,11 @@ pipeline {
             steps { 
                 script{
                  sh 'aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 418843764796.dkr.ecr.ap-south-1.amazonaws.com'
-                 sh 'docker build -t "nuvepro-${BUILD_ID}" .'
+                 sh 'docker build -t "nuvepro-${BUILD_ID}" --recreate .'
                  sh 'docker images'
                  sh 'docker tag "nuvepro-${BUILD_ID}" 418843764796.dkr.ecr.ap-south-1.amazonaws.com/nuvepro:nuvepro-${BUILD_ID}'
                  sh 'docker push 418843764796.dkr.ecr.ap-south-1.amazonaws.com/nuvepro:nuvepro-${BUILD_ID}'
-                 sh 'docker rmi -f "nuvepro-${BUILD_ID}" '
+                 sh 'docker rmi -f "418843764796.dkr.ecr.ap-south-1.amazonaws.com/nuvepro:nuvepro-${BUILD_ID}" '
                  sh 'docker images'   
                  sh 'zip -r nuvepro.zip appspec.yml scripts'
                  sh 'ls'
