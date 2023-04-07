@@ -1,5 +1,7 @@
 echo hello world
 ls
+cd /home/ubuntu/
+ls
 value=`cat number.txt`
 echo $value
 docker stop nuvepro
