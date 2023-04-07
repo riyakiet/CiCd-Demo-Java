@@ -18,7 +18,7 @@ pipeline {
             steps { 
                 script{
                  sh 'aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 418843764796.dkr.ecr.ap-south-1.amazonaws.com'
-                 sh 'docker build -t "nuvepro-${env.BUILD_ID}" .'
+                 sh 'docker build -t "nuvepro-${BUILD_ID}" .'
                  sh 'docker images'
                  sh 'zip -r nuvepro.zip appspec.yml scripts'
                  sh 'ls'
@@ -32,8 +32,8 @@ pipeline {
         }
         stage('Push'){
             steps {
-                sh 'docker tag "nuvepro-${evn.BUILD_Id}:latest" 418843764796.dkr.ecr.ap-south-1.amazonaws.com/nuvepro:nuvepro-${evn.BUILD_Id}'
-                 sh 'docker push 418843764796.dkr.ecr.ap-south-1.amazonaws.com/nuvepro:nuvepro-${evn.BUILD_Id}'
+                sh 'docker tag "nuvepro-${BUILD_Id}:latest" 418843764796.dkr.ecr.ap-south-1.amazonaws.com/nuvepro:nuvepro-${BUILD_Id}'
+                 sh 'docker push 418843764796.dkr.ecr.ap-south-1.amazonaws.com/nuvepro:nuvepro-${BUILD_Id}'
                  sh 'echo "Successfully pushed to ECR"'
             }
         }
