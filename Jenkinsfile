@@ -22,7 +22,7 @@ pipeline {
                  sh 'docker images'
                  sh 'docker tag "nuvepro-${BUILD_ID}" 418843764796.dkr.ecr.ap-south-1.amazonaws.com/nuvepro:nuvepro-${BUILD_ID}'
                  sh 'docker push 418843764796.dkr.ecr.ap-south-1.amazonaws.com/nuvepro:nuvepro-${BUILD_ID}'
-                 sh 'docker rmi "nuvepro-${BUILD_ID}" -f '
+                 sh 'sudo docker rmi "nuvepro-${BUILD_ID}" -f '
                  sh 'docker images'   
                  sh 'zip -r nuvepro.zip appspec.yml scripts'
                  sh 'ls'
