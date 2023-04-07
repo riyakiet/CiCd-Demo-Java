@@ -20,7 +20,7 @@ pipeline {
                  sh 'aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 418843764796.dkr.ecr.ap-south-1.amazonaws.com'
                  sh 'docker build -t "nuvepro-${BUILD_ID}" .'
                  sh 'docker images'
-                 docker tag nuvepro:latest 418843764796.dkr.ecr.ap-south-1.amazonaws.com/nuvepro:latest
+                 docker tag "nuvepro:latest" 418843764796.dkr.ecr.ap-south-1.amazonaws.com/nuvepro:latest
                  docker push 418843764796.dkr.ecr.ap-south-1.amazonaws.com/nuvepro:latest   
                  sh 'zip -r nuvepro.zip appspec.yml scripts'
                  sh 'ls'
