@@ -25,7 +25,7 @@ pipeline {
                  sh 'docker rmi -f "418843764796.dkr.ecr.ap-south-1.amazonaws.com/nuvepro:nuvepro-${BUILD_ID}" '
                  sh 'docker images' 
                  sh 'echo ${BUILD_ID} > number.txt'   
-                 sh 'zip -r nuvepro.zip appspec.yml scripts'
+                 sh 'zip -r nuvepro.zip appspec.yml scripts number.txt'
                  sh 'ls'
                  withAWS(credentials: 'AWSCredentials'){
                         sh """ #!/bin/bash 
