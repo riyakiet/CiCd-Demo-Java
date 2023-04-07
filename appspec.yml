@@ -6,6 +6,6 @@ files:
     destination: /home/ubuntu
 
 hooks:
-  BeforeInstall:
+  ApplicationStart:
     - location: scripts/start.sh
       runas: root
