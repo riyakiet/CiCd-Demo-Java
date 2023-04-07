@@ -33,7 +33,7 @@ pipeline {
         stage('Push'){
             steps {
                  sh 'docker tag nuvepro:latest 418843764796.dkr.ecr.ap-south-1.amazonaws.com/nuvepro:latest'
-                 sh 'docker push 418843764796.dkr.ecr.ap-south-1.amazonaws.com/nuvepro:latest'
+                 sh 'docker push 418843764796.dkr.ecr.ap-south-1.amazonaws.com/nuvepro:nuvepro-${BUILD_Id}latest'
                  sh 'echo "Successfully pushed to ECR"'
             }
         }
