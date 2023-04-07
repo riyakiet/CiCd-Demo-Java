@@ -32,9 +32,10 @@ pipeline {
         }
         stage('Push'){
             steps {
+                sh 'aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 418843764796.dkr.ecr.ap-south-1.amazonaws.com'
                 sh 'docker tag "nuvepro-${BUILD_Id}:latest" 418843764796.dkr.ecr.ap-south-1.amazonaws.com/nuvepro:nuvepro-${BUILD_Id}'
-                 sh 'docker push 418843764796.dkr.ecr.ap-south-1.amazonaws.com/nuvepro:nuvepro-${BUILD_Id}'
-                 sh 'echo "Successfully pushed to ECR"'
+                sh 'docker push 418843764796.dkr.ecr.ap-south-1.amazonaws.com/nuvepro:nuvepro-${BUILD_Id}'
+                sh 'echo "Successfully pushed to ECR"'
             }
         }
         stage('Deploy') {
