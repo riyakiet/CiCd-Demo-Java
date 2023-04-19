@@ -1,0 +1,52 @@
+{
+    "taskDefinitionArn": "arn:aws:ecs:ap-south-1:418843764796:task-definition/demo:4",
+    "containerDefinitions": [
+        {
+            "name": "nuvepro",
+            "image": "418843764796.dkr.ecr.ap-south-1.amazonaws.com/nuvepro:${BUILD_ID}",
+            "cpu": 0,
+            "portMappings": [
+                {
+                    "name": "nuvepro-8443-tcp",
+                    "containerPort": 8083,
+                    "hostPort": 8083,
+                    "protocol": "tcp",
+                    "appProtocol": "http"
+                }
+            ],
+            "essential": true,
+            "environment": [],
+            "mountPoints": [],
+            "volumesFrom": []
+        }
+    ],
+    "family": "demo",
+    "executionRoleArn": "arn:aws:iam::418843764796:role/ecsTaskExecutionRole",
+    "revision": 4,
+    "volumes": [],
+    "status": "ACTIVE",
+    "requiresAttributes": [
+        {
+            "name": "com.amazonaws.ecs.capability.ecr-auth"
+        },
+        {
+            "name": "ecs.capability.execution-role-ecr-pull"
+        }
+    ],
+    "placementConstraints": [],
+    "compatibilities": [
+        "EC2"
+    ],
+    "requiresCompatibilities": [
+        "EC2"
+    ],
+    "cpu": "256",
+    "memory": "250",
+    "runtimePlatform": {
+        "cpuArchitecture": "X86_64",
+        "operatingSystemFamily": "LINUX"
+    },
+    "registeredAt": "2023-04-17T05:33:40.451Z",
+    "registeredBy": "arn:aws:iam::418843764796:root",
+    "tags": []
+}
