@@ -1,3 +1,9 @@
+FROM maven as mvn
+WORKDIR /app
+COPY ./ ./
+RUN mvn clean install
+
 FROM openjdk:11
-COPY ./target/demo-0.0.1-SNAPSHOT.jar ./
-ENTRYPOINT ["java" , "-jar", "demo-0.0.1-SNAPSHOT.jar"]
+WORKDIR /app
+COPY --from=mvn /app/target/demo-0.0.1-SNAPSHOT.jar ./app.jar
+ENTRYPOINT ["java", "-jar" ,"app.jar"]                                                                                                              ~                                         
