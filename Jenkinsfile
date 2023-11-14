@@ -1,12 +1,5 @@
 pipeline {
     agent any
-    environment {
-        AWS_ACCOUNT_ID="418843764796"
-        AWS_DEFAULT_REGION="ap-south-1" 
-        IMAGE_REPO_NAME="nuvepro"
-        IMAGE_TAG="latest"
-        REPOSITORY_URI = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}"
-    }
     stages {
          stage('Cloning Git') {
             steps {
@@ -17,39 +10,20 @@ pipeline {
         stage('Build') { 
             steps { 
                 script{
-                 sh 'aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 418843764796.dkr.ecr.ap-south-1.amazonaws.com'
-                 sh 'docker build -t "nuvepro-${BUILD_ID}" .'
-                 sh 'docker images'
-                 sh 'docker tag nuvepro-${BUILD_ID} 418843764796.dkr.ecr.ap-south-1.amazonaws.com/nuvepro:nuvepro-${BUILD_ID}'
-                 sh 'docker push 418843764796.dkr.ecr.ap-south-1.amazonaws.com/nuvepro:nuvepro-${BUILD_ID}'
-                 sh 'docker rmi -f "nuvepro-${BUILD_ID}"'
-                 sh 'docker rmi -f "418843764796.dkr.ecr.ap-south-1.amazonaws.com/nuvepro:nuvepro-${BUILD_ID}" '
-                 sh 'docker images' 
-                 sh 'echo ${BUILD_ID} > number.txt'   
-                 sh 'zip -r nuvepro.zip appspec.yml scripts number.txt'
-                 sh 'ls'
-                 withAWS(credentials: 'AWSCredentials'){
-                        sh """ #!/bin/bash 
-                            aws s3 cp nuvepro.zip s3://nuvepro/
-                        """
+                     sh 'mvn clean install'
+                     sh 'cd targets'
+                     sh 'nohup java -jar demo-0.0.1-SNAPSHOT.jar &'
                     }
                 }
             }
         }
-//         stage('Push'){
-//             steps {
-//                 sh 'aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 418843764796.dkr.ecr.ap-south-1.amazonaws.com'
-//                 sh 'docker tag "nuvepro-${BUILD_Id}:latest" 418843764796.dkr.ecr.ap-south-1.amazonaws.com/nuvepro:nuvepro-${BUILD_Id}'
-//                 sh 'docker push 418843764796.dkr.ecr.ap-south-1.amazonaws.com/nuvepro:nuvepro-${BUILD_Id}'
-//                 sh 'echo "Successfully pushed to ECR"'
-//             }
-//         }
+
         stage('Deploy') {
             steps {
                 script{
                     withAWS(credentials: 'AWSCredentials'){
                         sh """ #!/bin/bash 
-                        aws deploy create-deployment --application-name "nuvepro" --deployment-group-name "nuvepro-dg" --s3-location "bucket='nuvepro',key=nuvepro.zip,bundleType=zip"
+                        aws deploy create-deployment --application-name "nuvepro" --deployment-group-name "nuvepro-dg" --s3-location "bucket='kiet-infra',key=kiet-infra.zip,bundleType=zip"
                         """
                     }
                     }
