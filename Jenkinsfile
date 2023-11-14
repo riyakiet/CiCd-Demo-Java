@@ -10,9 +10,8 @@ pipeline {
         stage('Build') { 
             steps { 
                 script{
+                     sh 'cd /CiCd-Demo-Java '
                      sh 'mvn clean install'
-                     sh 'cd targets'
-                     sh 'nohup java -jar demo-0.0.1-SNAPSHOT.jar &'
                     }
                 }
             }
