@@ -12,7 +12,6 @@ pipeline {
                 script{
                      sh 'pwd'
                      sh 'ls'
-                     sh 'cd /CiCd-Demo-Java '
                      sh 'mvn clean install'
                     }
                 }
