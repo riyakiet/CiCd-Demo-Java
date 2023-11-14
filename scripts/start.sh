@@ -1,5 +1,6 @@
 echo hello world
-cd /home/ubuntu/
+sudo su 
+cd /home/ubuntu/CiCd-Demo-Java/target
 ls
 # value=`cat number.txt`
 # echo $value
