@@ -3,6 +3,7 @@ sudo su
 cd /home/ubuntu/kiet-infra-application/target/
 pid=$(pgrep -f "java -jar demo-0.0.1-SNAPSHOT.jar")
 echo "PID: $pid"
+kill -9 "$pid"
 ls
 # value=`cat number.txt`
 # echo $value
