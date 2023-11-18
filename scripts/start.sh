@@ -1,6 +1,6 @@
 echo hello world
 sudo su 
-cd /home/ubuntu/CiCd-Demo-Java/target
+cd /home/ubuntu/kiet-infra-application/target/
 ls
 # value=`cat number.txt`
 # echo $value
