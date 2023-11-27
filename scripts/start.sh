@@ -1,6 +1,6 @@
 # start buildspec
 sudo su 
-mv /home/ubuntu/kiet-infra-application/target/* /home/ubuntu/kiet-infra-application/backup/
+#mv /home/ubuntu/kiet-infra-application/target/* /home/ubuntu/kiet-infra-application/backup/
 cd /home/ubuntu/kiet-infra-application/target/
 pid=$(pgrep -f "demo-0.0.1-SNAPSHOT.jar")
 echo "PID: $pid"
