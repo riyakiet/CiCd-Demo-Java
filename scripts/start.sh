@@ -5,6 +5,7 @@ pid=$(pgrep -f "demo-0.0.1-SNAPSHOT.jar")
 echo "PID: $pid"
 kill -9 "$pid"
 ls
+mv /home/ubuntu/kiet-infra-application/target/* /home/ubuntu/kiet-infra-application/backup/
 # value=`cat number.txt`
 # echo $value
 # docker stop nuvepro
